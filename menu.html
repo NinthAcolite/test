@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Каталог товаров</title>
+  <style>
+    ul {
+      list-style-type: none;
+      padding-left: 20px;
+    }
+
+    li {
+      cursor: pointer;
+      margin: 5px 0;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .open > ul {
+      display: block;
+    }
+
+    .toggle::before {
+      content: "▶ ";
+      display: inline-block;
+      transition: transform 0.2s;
+    }
+
+    .open > .toggle::before {
+      transform: rotate(90deg);
+    }
+  </style>
+</head>
+<body>
+
+<h2>Каталог товаров</h2>
+
+<ul class="menu">
+  <li>
+    <span class="toggle">Книги</span>
+    <ul class="hidden">
+      <li><span class="toggle">Отечественные</span></li>
+      <li>
+        <span class="toggle">Зарубежные</span>
+        <ul class="hidden">
+          <li><a href="#">Детективы</a></li>
+          <li><a href="#">Научная фантастика</a></li>
+          <li><a href="#">Исторические</a></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <span class="toggle">DVD</span>
+    <ul class="hidden">
+      <li>
+        <span class="toggle">Отечественные</span>
+        <ul class="hidden">
+          <li><a href="#">Детективы</a></li>
+          <li><a href="#">Научная фантастика</a></li>
+          <li><a href="#">Исторические</a></li>
+        </ul>
+      </li>
+      <li><span class="toggle">Зарубежные</span></li>
+    </ul>
+  </li>
+</ul>
+
+<script>
+  document.querySelectorAll('.toggle').forEach(toggle => {
+    toggle.addEventListener('click', event => {
+      const parentLi = toggle.closest('li');
+      const childUl = parentLi.querySelector('ul');
+
+      if (childUl) {
+        childUl.classList.toggle('hidden');
+        parentLi.classList.toggle('open');
+      } else {
+        alert(`Вы можете перейти по ссылке: ${toggle.textContent}`);
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
