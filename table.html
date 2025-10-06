@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Таблица случайных чисел</title>
+  <style>
+    table {
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+    td {
+      border: 1px solid #333;
+      width: 50px;
+      height: 30px;
+      text-align: center;
+    }
+    .highlight {
+      background-color: orange;
+    }
+  </style>
+</head>
+<body>
+
+  <button onclick="foo()">Добавить число</button>
+
+  <table id="numberTable"></table>
+
+  <script>
+    const rows = 5;
+    const cols = 6;
+    const total = rows * cols;
+    const numbers = [];
+
+    for (let i = 0; i < total; i++) {
+      numbers.push(Math.floor(Math.random() * 100));
+    }
+
+    const table = document.getElementById('numberTable');
+    let index = 0;
+
+    for (let r = 0; r < rows; r++) {
+      const tr = document.createElement('tr');
+      for (let c = 0; c < cols; c++) {
+        const td = document.createElement('td');
+        const num = numbers[index++];
+        td.textContent = num;
+        if (num >= 50) td.classList.add('highlight');
+        tr.appendChild(td);
+      }
+      table.appendChild(tr);
+    }
+
+    function foo() {
+      const newNum = Math.floor(Math.random() * 100);
+      const td = document.createElement('td');
+      td.textContent = newNum;
+      if (newNum >= 50) td.classList.add('highlight');
+
+      const lastRow = table.rows[table.rows.length - 1];
+      if (lastRow && lastRow.cells.length < cols) {
+        lastRow.appendChild(td);
+      } else {
+        const newRow = document.createElement('tr');
+        newRow.appendChild(td);
+        table.appendChild(newRow);
+      }
+    }
+  </script>
+
+</body>
+</html>
