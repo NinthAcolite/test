@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Слайдер</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        padding: 40px;
+      }
+
+      .slider-container {
+        position: relative;
+        width: 300px;
+        height: 40px;
+        margin: 50px 0;
+      }
+
+      .track {
+        position: absolute;
+        top: 20px;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: #999696;
+        border-radius: 2px;
+      }
+
+      .thumb {
+        position: absolute;
+        top: 12px;
+        width: 0px;
+        height: 0px;
+        /*background: #ff0000;*/
+        border-left: 5px solid transparent;
+        border-right: 5px solid transparent;
+        border-bottom: 16px solid #ff0000;
+        cursor: pointer;
+        transform: translateX(-50%);
+      }
+
+      .value {
+        position: absolute;
+        top: -25px;
+        left: 0;
+        transform: translateX(-50%);
+        font-weight: bold;
+      }
+
+      .ticks {
+        position: absolute;
+        top: 18px;
+        left: 0;
+        right: 0;
+        height: 4px;
+        pointer-events: none;
+      }
+
+      .ticks::before {
+        content: "";
+        display: block;
+        height: 200%;
+        background: repeating-linear-gradient(
+          to right,
+          #ff0000,
+          #000000 1px,
+          transparent 1px,
+          transparent 10%
+        );
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Value: <span id="display">50</span></h2>
+
+    <div class="slider-container" id="slider">
+      <div class="track"></div>
+      <div class="ticks"></div>
+      <div class="thumb" id="thumb"></div>
+      <div class="value" id="value">50</div>
+    </div>
+
+    <script>
+      const slider = document.getElementById("slider");
+      const thumb = document.getElementById("thumb");
+      const valueDisplay = document.getElementById("value");
+      const display = document.getElementById("display");
+
+      const min = 0;
+      const max = 100;
+      const sliderWidth = slider.offsetWidth;
+
+      let isDragging = false;
+
+      function updateSlider(clientX) {
+        const rect = slider.getBoundingClientRect();
+        let x = clientX - rect.left;
+        x = Math.max(0, Math.min(x, sliderWidth));
+        const percent = x / sliderWidth;
+        const value = Math.round(min + percent * (max - min));
+
+        thumb.style.left = `${x}px`;
+        valueDisplay.style.left = `${x}px`;
+        valueDisplay.textContent = value;
+        display.textContent = value;
+      }
+
+      thumb.addEventListener("mousedown", () => {
+        isDragging = true;
+      });
+
+      document.addEventListener("mouseup", () => {
+        isDragging = false;
+      });
+
+      document.addEventListener("mousemove", (e) => {
+        if (isDragging) {
+          updateSlider(e.clientX);
+        }
+      });
+
+      updateSlider(sliderWidth / 2);
+    </script>
+  </body>
+</html>
